@@ -1,0 +1,33 @@
+.file-field.medium .file-path-wrapper {
+    height: 3rem;
+}
+.file-field.medium .file-path-wrapper .file-path {
+    height: 2.8rem;
+}
+
+.file-field.big-2 .file-path-wrapper {
+    height: 3.7rem;
+}
+.file-field.big-2 .file-path-wrapper .file-path {
+    height: 3.5rem;
+}
+
+#todo-style{
+    margin-left: 550px;
+    margin-top: 30px;
+}
+
+#todo-list-style{
+    margin-left: 500px;
+    margin-top: 20px;
+}
+
+.column {
+  float: left;
+}
+
+/* @media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+} */
