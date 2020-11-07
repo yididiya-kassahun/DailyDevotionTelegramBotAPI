@@ -24,10 +24,10 @@ Route::post('/postItem', [
     'uses' => 'telegramController@postItem',
 ]);
 
-Route::get('/getMessages', [
+Route::post('/getMessages', [
     'uses' => 'telegramController@getMessages',
 ]);
 
-Route::post('/post.message', [
+Route::post('/postMessage', [
     'uses' => 'telegramController@sendMessage'
 ]);

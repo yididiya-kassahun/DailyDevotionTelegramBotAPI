@@ -20,30 +20,34 @@ class telegramController extends Controller
 
    public function getMessages(){
     // try{
-       $updates = file_get_contents($this->telegram_url."/getupdates");
-       $decode_content = json_decode($updates,true);
+      // $updates = file_get_contents($this->telegram_url."/getupdates");
+      // $updates = file_get_contents("php://input");
 
-       foreach($decode_content['result'] as $content){
+      // **************|| Webhook Set ||********************
+         Logger('message', ['mydata'=>request()->all()]); // Check request in log
+           $request = request()->all();
+
            $addItem = new Member();
-           $addItem->chat_id = $content['message']['from']['id'];
-           $addItem->first_name = $content['message']['from']['first_name'];
-           $addItem->text =$content['message']['text'];
+           $addItem->chat_id = $request['message']['from']['id'];
+           $addItem->first_name = $request['message']['from']['first_name'];
+           $addItem->text =$request['message']['text'];
            $addItem->save();
-       }
+
        $members = Member::all();
-       $message = "Daily Devotional Bot ";
-          foreach($members as $member){
-              file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text=hello ".$member->first_name." ".$message);
+       foreach($members as $member){
+        file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text=".urlencode("ሰላም ").$member->first_name.urlencode (" እኔ የየእለቱ የእግዚአብሔር ቃል የጥሞና ማሰላሰያ እና የየዕለት የቃል ጥናት ጥቅስ የማቀርብላችሁ Bot ነኝ።"));
           }
-       return response()->json(['Data Successfully Saved & Sent!'], 200);
+        return response()->json(['Data Successfully Saved & Sent!'], 200);
+
     //  }catch(Exception $e){
     //    return response()->json(['message'=>'Network Error !!'], 400);
-    //  }
-   }
-   public function sendMessage(Requset $request){
+      }
+
+   public function sendMessage(Request $request){
        $members = Member::all();
+
           foreach($members as $member){
-              file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text= ".$request['content']);
+              file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text= ".$request['title'].$request['content']);
           }
 
           return response()->json(['Message Sent Successfully'], 200);
