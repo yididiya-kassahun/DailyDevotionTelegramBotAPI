@@ -28,6 +28,26 @@ Route::post('/getMessages', [
     'uses' => 'telegramController@getMessages',
 ]);
 
+Route::get('/getMembers', [
+   'uses' => 'telegramController@getMembers'
+]);
+
+Route::get('/getDevotions',[
+   'uses'=>'telegramController@getPosts'
+]);
+
 Route::post('/postMessage', [
     'uses' => 'telegramController@sendMessage'
+]);
+
+Route::get('/recentPosts',[
+    'uses' => 'telegramController@recentPosts'
+]);
+
+Route::get('/countMembers', [
+    'uses' => 'telegramController@countMembers'
+]);
+
+Route::get('/countDevotion',[
+     'uses' => 'telegramController@countPosts'
 ]);

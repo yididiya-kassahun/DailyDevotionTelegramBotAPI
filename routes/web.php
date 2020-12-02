@@ -13,30 +13,3 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [
-    'uses' => 'todoController@home'
-]);
-
-Route::post('/todo', [
-    'uses' => 'todoController@myToDoList',
-    'as' => 'todo.post'
-]);
-
-Route::get('delete.todo/{id}',[
-    'uses'=>'todoController@deleteToDo',
-    'as'=>'delete.todo'
-]);
-
-Route::get('update.todo/{id}',[
-    'uses'=>'todoController@updateToDo',
-    'as'=>'update.todo'
-]);
-// Route::get('/home' ,[
-//     'uses' => 'homeController@homeView',
-//     'as' => 'home'
-// ]);
-
-// Route::post('/postItem', [
-//     'uses' => 'homeController@postItem',
-//     'as' => 'postItem'
-// ]);
