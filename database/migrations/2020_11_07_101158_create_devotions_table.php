@@ -17,6 +17,9 @@ class CreateDevotionsTable extends Migration
             $table->id();
             $table->string('devotion_title');
             $table->longText('devotion_content');
+            $table->integer('admin_id');
+            $table->bigInteger('fellowship_id')->unsigned();
+            $table->foreign('fellowship_id')->references('fellow_id')->on('fellowships')->onDelete('cascade');
             $table->timestamps();
         });
     }

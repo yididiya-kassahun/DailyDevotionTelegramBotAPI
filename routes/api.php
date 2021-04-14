@@ -20,13 +20,7 @@ use Illuminate\Http\Request;
 
 // >>>>>>>>>>>>>>Test API Requests <<<<<<<<<<<<<<<<<<
 
-Route::post('/postItem', [
-    'uses' => 'telegramController@postItem',
-]);
 
-Route::post('/getMessages', [
-    'uses' => 'telegramController@getMessages',
-]);
 
 Route::get('/getMembers', [
    'uses' => 'telegramController@getMembers'
@@ -34,6 +28,15 @@ Route::get('/getMembers', [
 
 Route::get('/getDevotions',[
    'uses'=>'telegramController@getPosts'
+]);
+
+Route::post('/addToken',[
+    'uses'=> 'telegramController@addToken',
+    'as'=> 'addToken'
+]);
+
+Route::post('/getMessages', [
+    'uses' => 'telegramController@getMessages',
 ]);
 
 Route::post('/postMessage', [

@@ -12,6 +12,11 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function roles(){
+
+        return $this->belongsToMany('App\Role', 'user_role', 'user_id','role_id');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

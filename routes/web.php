@@ -13,3 +13,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/product', [
+    'uses' => 'productController@viewData'
+]);
+
+Route::post('/prod.store', [
+    'uses' => 'productController@product',
+    'as'=>'prod.store'
+]);
+
+Route::get('/product', [productController::class,'product']);
+
+
