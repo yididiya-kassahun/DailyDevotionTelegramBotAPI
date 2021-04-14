@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Fellowship;
 use App\User;
+use App\Role;
 
 class AuthController extends Controller
 {
@@ -31,6 +32,8 @@ class AuthController extends Controller
                 return response()->json(['error' => 'validation error' , 'message' => $validator->messages()], 400);
             }
 
+            $role_admin =Role::where('name', 'Admin')->first();
+
             $fellowship = new Fellowship();
             $fellowship->university_name = $request->input('university_name');
             $fellowship->university_city = $request->input('university_city');
@@ -45,6 +48,7 @@ class AuthController extends Controller
         $user->password = $request['password'];
         $user->password = bcrypt($request->password);
         $user->save();
+        $user->roles()->attach($role_admin);  // Temporary
 
         $accessToken = $user->createToken('authToken')->accessToken;
 
@@ -82,7 +86,7 @@ class AuthController extends Controller
                 ['email', '=', $credentials['email']]
             ])->value('id');
 
-            $role = DB::table('user_role')->select('role_id')->where([
+            $role = DB::table('user_roles')->select('role_id')->where([
                 ['user_id', '=', $contacts_id]
             ])->value('role_id');
 
@@ -95,7 +99,7 @@ class AuthController extends Controller
                if($role_name == 'Admin' || $role_name == 'Super Admin'){
                 $user = Auth::user();
                 $token = $user->createToken('authToken')->accessToken;
-                
+
                 $id=$user->id;
                 $role=User::find($id)->roles;
 

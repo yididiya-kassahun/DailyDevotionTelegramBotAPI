@@ -18,9 +18,19 @@ use Illuminate\Http\Request;
 //     return $request->user();
 // });
 
-// >>>>>>>>>>>>>>Test API Requests <<<<<<<<<<<<<<<<<<
+// >>>>>>>>>>>>>> Auth API  <<<<<<<<<<<<<<<<<<
 
+Route::post('/admin.signup',[
+    'uses'=> 'AuthController@adminSignUp',
+    'as'=>'admin.signup'
+]);
 
+Route::post('/admin.signin',[
+    'uses'=> 'AuthController@adminSignIn',
+    'as'=>'admin.signin'
+]);
+
+// >>>>>>>>>>>>>>> Bot API Routes <<<<<<<<<<<<<
 
 Route::get('/getMembers', [
    'uses' => 'telegramController@getMembers'

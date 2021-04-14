@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use Symfony\Component\Process\Process;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\Process\Exception\ProcessFailedException;
 
 use Illuminate\Http\Request;
@@ -35,7 +36,7 @@ class telegramController extends Controller
            $addMember->fellowship_id = $admin->fellowship_id;
            $addMember->save();
 
-       $member = Member::where(['chat_id','=',$request['message']['from']['id']])->first();
+        $member = Member::where(['chat_id','=',$request['message']['from']['id'],'fellowship_id'=>$admin->fellowship_id])->first();
 
         file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text=".urlencode("ሰላም ").$member->first_name.urlencode (" እኔ የየእለቱ የእግዚአብሔር ቃል የጥሞና ማሰላሰያ እና የየዕለት የቃል ጥናት ጥቅስ የማቀርብላችሁ Bot ነኝ።"));
 
@@ -46,11 +47,11 @@ class telegramController extends Controller
        try{
        $admin = auth('api')->user();
 
-       $members = Member::all();
-       $getToken = BotToken::find($admin->id)->botToken;
+       $members = Member::where(['fellowship_id'=>$admin->fellowship_id]);
+       $getToken = BotToken::find($admin->id);
 
           foreach($members as $member){
-              file_get_contents($this->telegram_url.$getToken."/sendmessage?chat_id=".$member->chat_id."&text=".urlencode($request['title'])."\n\n".urlencode($request['content']));
+              file_get_contents($this->telegram_url.$getToken->botToken."/sendmessage?chat_id=".$member->chat_id."&text=".urlencode($request['title'])."\n\n".urlencode($request['content']));
           }
 
           $devotion = new Devotion();
@@ -69,7 +70,7 @@ class telegramController extends Controller
         }
    }
 
-   function addToken($token){
+   function addToken(Request $request){
            try{
                $admin = auth('api')->user();
 
