@@ -45,6 +45,11 @@ Route::post('/addToken',[
     'as'=> 'addToken'
 ]);
 
+Route::get('/getToken',[
+    'uses'=> 'telegramController@getToken',
+    'as'=>'getToken'
+]);
+
 Route::post('/getMessages', [
     'uses' => 'telegramController@getMessages',
 ]);

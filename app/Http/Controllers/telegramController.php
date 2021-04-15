@@ -17,13 +17,13 @@ class telegramController extends Controller
     protected $telegram_url;
 
     public function __construct(){
-        $this->middleware('auth:api');
-     //  $this->botToken = '1255978101:AAEwIjtn8M4l3UbdkNLhivCwc28EtNOGUwg';
-       $this->telegram_url = 'https://api.telegram.org/bot';
+     //   $this->middleware('auth:api');
+       $this->botToken = '1796849537:AAGD420qzmkHKQNxTnmjcqv9hmgY6avKIRM';
+       $this->telegram_url = 'https://api.telegram.org/bot1796849537:AAGD420qzmkHKQNxTnmjcqv9hmgY6avKIRM';
     }
 
    public function getMessages(){
-       $admin = auth('api')->user();
+   //  $admin = auth('api')->user();
 
       // **************|| Webhook Set ||********************
          Logger('message', ['mydata'=>request()->all()]); // Check request in log
@@ -33,10 +33,11 @@ class telegramController extends Controller
            $addMember->chat_id = $request['message']['from']['id'];
            $addMember->first_name = $request['message']['from']['first_name'];
            $addMember->text =$request['message']['text'];
-           $addMember->fellowship_id = $admin->fellowship_id;
+           $addMember->adminId = 2;
+           $addMember->fellowship_id = 1;//$admin->fellowship_id;
            $addMember->save();
 
-        $member = Member::where(['chat_id','=',$request['message']['from']['id'],'fellowship_id'=>$admin->fellowship_id])->first();
+        $member = Member::where(['chat_id','=',$request['message']['from']['id']])->first();
 
         file_get_contents($this->telegram_url."/sendmessage?chat_id=".$member->chat_id."&text=".urlencode("ሰላም ").$member->first_name.urlencode (" እኔ የየእለቱ የእግዚአብሔር ቃል የጥሞና ማሰላሰያ እና የየዕለት የቃል ጥናት ጥቅስ የማቀርብላችሁ Bot ነኝ።"));
 
@@ -100,6 +101,18 @@ class telegramController extends Controller
            }
    }
 
+   function getToken(){
+        try{
+            $admin = auth('api')->user();
+
+            $botToken = BotToken::where(['fellowship_id'=>$admin->fellowship_id])->paginate(5);
+            return response()->json($botToken,200);
+
+       }catch(Exception $ex){
+            return response()->json(['message' => 'Ooops! something went wrong', 'error' => $ex->getMessage()], 500);
+       }
+   }
+
    function getMembers(){
        try{
             $admin = auth('api')->user();
@@ -132,7 +145,7 @@ class telegramController extends Controller
        try{
        $admin = auth('api')->user();
 
-       $countMembers = Member::where(['fellowship_id'=>$admin->fellowship_id,'admin_id'=>$admin->admin_id])->count();
+       $countMembers = Member::where(['fellowship_id'=>$admin->fellowship_id,'adminId'=>$admin->admin_id])->count();
        return response()->json(['totalMembers'=>$countMembers]);
 
        }catch(Exception $ex){
